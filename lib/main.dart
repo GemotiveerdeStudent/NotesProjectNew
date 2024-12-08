@@ -7,7 +7,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MaterialApp(
-    title: 'Flutter Demo',
+    title: 'Notes Project',
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(
         seedColor: const Color.fromARGB(255, 96, 150, 219)),
@@ -45,7 +45,6 @@ class HomePage extends StatelessWidget {
                 print('You are a verified user');
               } else {
                 print('You are not a verified user, you need to verify!');
-                print(user);
               }
               return const Text('Done');
             default:
