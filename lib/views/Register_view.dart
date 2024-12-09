@@ -36,56 +36,61 @@ class _RegisterViewState extends State<RegisterView> {
       appBar: AppBar(
         title: const Text('Register'),
         backgroundColor: Colors.blue,
-       ),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(
-          children: [
-            TextField(
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: 'Enter your E-mail here',
-              ),
-            ),
-            TextField(
-              controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: InputDecoration(
-                hintText: 'Enter your Password here',
-              )            
-            ),
-            TextButton(
-              onPressed: () async {
-
-                final email = _email.text;
-                final password = _password.text;
-                final userCredential = 
-                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                email: email, 
-                password: password);
-        
-                    print(userCredential);
-              },
-              child: const Text('Register')
-              ),
-            ],
-          );
-          default:
-            return const Text('Loading...');
-          }
-        },  
       ),
-    )
-  ;
-  }
+      body: Column(
+            children: [
+              TextField(
+                controller: _email,
+                enableSuggestions: false,
+                autocorrect: false,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: 'Enter your E-mail here',
+                ),
+              ),
+              TextField(
+                controller: _password,
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  hintText: 'Enter your Password here',
+                )            
+              ),
+              TextButton(
+                onPressed: () async {
+                  final email = _email.text;
+                  final password = _password.text;
+                  try { 
+                    final UserCredential = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                      email: email,
+                      password: password,
+                    );
+                    print(UserCredential);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        print('The password provided is too weak.');
+                      } else if (e.code == 'email-already-in-use') {
+                        print('The account already exists for that email.');
+                      } else if (e.code == 'invalid-email') {
+                        print('The email provided is invalid.');
+                      }
+                    }
+                },
+                child: const Text('Register')
+                ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login/', 
+                    (route) => false,
+                  );
+                  }, 
+                child: const Text('Already registered? Login here!'),  
+              )
+              ],
+              )
+    );
+          }
 }
