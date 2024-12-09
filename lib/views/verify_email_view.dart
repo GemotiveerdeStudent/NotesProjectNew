@@ -14,20 +14,20 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Verify E-mail'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Column(
         children: [
-            const Text('Please verify your E-mail'), 
-            TextButton(
-              onPressed: () async {
-                final user = FirebaseAuth.instance.currentUser;
-                await user?.sendEmailVerification();
-            }, 
+          const Text('Please verify your E-mail'),
+          TextButton(
+            onPressed: () async {
+              final user = FirebaseAuth.instance.currentUser;
+              await user?.sendEmailVerification();
+            },
             child: const Text('Send E-mail Verification'),
-            )
-          ],
-          ),
+          )
+        ],
+      ),
     );
   }
 }
