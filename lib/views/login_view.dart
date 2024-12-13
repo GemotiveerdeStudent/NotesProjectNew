@@ -65,27 +65,33 @@ class _LoginViewState extends State<LoginView> {
                   email: email,
                   password: password,
                 );
-                {
-                  if (!mounted) return;
+                if (!mounted) return;
+                final user = FirebaseAuth.instance.currentUser;
+                if (user?.emailVerified ?? false) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     notesRoute,
-                    (_) => false,
+                    (route) => false,
+                  );
+                } else {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    verifyEmailRoute,
+                    (route) => false,
                   );
                 }
               } on FirebaseAuthException catch (e) {
                 devtools.log('FirebaseAuthException: ${e.code}');
                 if (!mounted) return;
                 if (e.code == 'user-not-found') {
-                    await showErrorDialog(
+                  await showErrorDialog(
                     context,
                     'No user found for that email.',
                   );
-                }  else if (e.code == 'invalid-credential') {
+                } else if (e.code == 'invalid-credential') {
                   await showErrorDialog(
                     context,
                     'Invalid credentials',
                   );
-                }else if (e.code == 'invalid-email') {
+                } else if (e.code == 'invalid-email') {
                   await showErrorDialog(
                     context,
                     'The email address is badly formatted.',
@@ -116,4 +122,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
