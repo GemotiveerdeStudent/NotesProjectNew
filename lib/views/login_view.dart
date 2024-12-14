@@ -91,11 +91,6 @@ class _LoginViewState extends State<LoginView> {
                     context,
                     'Invalid credentials',
                   );
-                } else if (e.code == 'invalid-email') {
-                  await showErrorDialog(
-                    context,
-                    'The email address is badly formatted.',
-                  );
                 } else {
                   await showErrorDialog(
                     context,
