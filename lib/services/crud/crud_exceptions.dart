@@ -17,3 +17,5 @@ class CouldNotDeleteNote implements Exception {}
 class CouldNotFindNotes implements Exception {}
 
 class CouldNotUpdateNote implements Exception {}
+
+class CouldNotFindUser implements Exception {}
