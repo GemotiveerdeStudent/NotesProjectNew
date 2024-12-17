@@ -1,7 +1,9 @@
+// DB Exceptions
 class DatabaseAlreadyOpenException implements Exception {}
 
 class UnableToGetDocumentsDirectory implements Exception {}
 
+// CRUD Exceptions
 class DatabaseIsNotOpen implements Exception {}
 
 class CouldNotDeleteUser implements Exception {}
