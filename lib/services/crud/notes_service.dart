@@ -130,7 +130,6 @@ class NotesService {
     final db = _getDatabaseOrThrow();
 
     // Make sure the user exists in the DB with the correct id
-
     final dbUser = await getUser(email: owner.email);
     if (dbUser != owner) {
       throw CouldNotFinduser();
