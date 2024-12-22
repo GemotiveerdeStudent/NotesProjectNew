@@ -13,19 +13,24 @@ class NotesService {
 
   // Singleton
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
   factory NotesService() => _shared;
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
 
-
-  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;   // Getter for getting all the notes.
+  Stream<List<DatabaseNote>> get allNotes =>
+      _notesStreamController.stream; // Getter for getting all the notes.
 
   Future<DatabaseUser?> getOrCreateUser({required String email}) async {
     try {
-          final user = await getUser(email: email);
-          return user;
+      final user = await getUser(email: email);
+      return user;
     } on CouldNotFindUser {
       final createdUser = await createUser(email: email);
       return createdUser;
@@ -35,14 +40,13 @@ class NotesService {
   }
 
   Future<void> _cacheNotes() async {
-    final allNotes = await getAllNotes();  
+    final allNotes = await getAllNotes();
     _notes = allNotes.toList();
     _notesStreamController.add(_notes);
   }
 
   // Note CRUD Functions
   Future<DatabaseNote> updateNote({
-
     required DatabaseNote note,
     required String text,
   }) async {
@@ -61,11 +65,10 @@ class NotesService {
       },
     );
 
-
     if (updatedCount != 1) {
       throw CouldNotUpdateNote();
     } else {}
-    final updatedNote =  await getNote(id: note.id);
+    final updatedNote = await getNote(id: note.id);
     _notes.removeWhere((note) => note.id == updatedNote.id);
     _notes.add(updatedNote);
     _notesStreamController.add(_notes);
@@ -311,9 +314,9 @@ class DatabaseNote {
 // Constants
 // Table names
 const dbName = 'notes.db';
-const userTable = 'users';
-const noteTable = 'notes';
-// column names 
+const userTable = 'user';
+const noteTable = 'note';
+// column names
 const idColumn = "id";
 const emailColumn = "email";
 const userIdColumn = "user_id";
@@ -321,15 +324,15 @@ const textColumn = "text";
 const isSyncedWithCloudColumn = "is_synced_with_cloud";
 // Sql Tables
 const createNoteTable = '''CREATE TABLE IF NOT EXISTS "note" (
-    	"id"	INTEGER NOT NULL,
-      "user_id"	INTEGER NOT NULL,
-      "text"	TEXT,
-      "is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
+      "id"  INTEGER NOT NULL,
+      "user_id"   INTEGER NOT NULL,
+      "text"      TEXT,
+      "is_synced_with_cloud"  INTEGER NOT NULL DEFAULT 0,
       PRIMARY KEY("id" AUTOINCREMENT),
       FOREIGN KEY("user_id") REFERENCES "user"("id")
       );''';
 const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
-    	"id"	INTEGER NOT NULL UNIQUE,
-    	"email"	INTEGER NOT NULL UNIQUE,
-    	PRIMARY KEY("id" AUTOINCREMENT)
+      "id"  INTEGER NOT NULL UNIQUE,
+      "email"     INTEGER NOT NULL UNIQUE,
+      PRIMARY KEY("id" AUTOINCREMENT)
       );''';
