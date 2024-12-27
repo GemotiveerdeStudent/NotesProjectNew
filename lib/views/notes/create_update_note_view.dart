@@ -55,7 +55,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
       return existingNote;
     }
     final currentUser = AuthService.firebase().currentUser!;
-    final email = currentUser.email!;
+    final email = currentUser.email;
     final owner = await _notesService.getUser(email: email);
     // Owner is ! here, it is not in the tutorial, check this out before push plz
     final newNote = await _notesService.createNote(owner: owner!);
