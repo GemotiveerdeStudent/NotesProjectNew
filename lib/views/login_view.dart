@@ -6,7 +6,6 @@ import 'package:notes/services/auth/bloc/auth_event.dart';
 import 'package:notes/services/auth/bloc/auth_state.dart';
 import 'package:notes/utilities/dialogs/error_dialog.dart';
 import 'package:notes/utilities/dialogs/loading_dialog.dart';
-import '../constants/routes.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
