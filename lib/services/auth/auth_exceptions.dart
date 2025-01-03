@@ -19,6 +19,3 @@ class InvalidEmailAuthException implements Exception {}
 class GenericAuthAuthException implements Exception {}
 
 class UserNotLoggedInAuthException implements Exception {}
-
-// 
-
