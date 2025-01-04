@@ -4,18 +4,9 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-/// Default [FirebaseOptions] for use with your Firebase apps.
-///
-/// Example:
-/// ```dart
-/// import 'firebase_options.dart';
-/// // ...
-/// await Firebase.initializeApp(
-///   options: DefaultFirebaseOptions.currentPlatform,
-/// );
-/// ```
-class DefaultFirebaseOptions {
-  static FirebaseOptions get currentPlatform {
+// This class is used to get the current platform and return the Firebase options for that platform.
+class DefaultFirebaseOptions { 
+  static FirebaseOptions get currentPlatform { // This method is used to get the current platform and return the Firebase options for that platform.
     if (kIsWeb) {
       return web;
     }
@@ -40,14 +31,15 @@ class DefaultFirebaseOptions {
     }
   }
 
+// The Firebase options for the different platforms.
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDIuM6S_lmu4pS7HlKodRmu9Olr_iZHils',
-    appId: '1:179232677382:web:6d60759b15ce12fe94ed87',
-    messagingSenderId: '179232677382',
-    projectId: 'mynotes-buck',
-    authDomain: 'mynotes-buck.firebaseapp.com',
-    storageBucket: 'mynotes-buck.appspot.com',
-    measurementId: 'G-FDSCS0K4NF',
+    apiKey: 'AIzaSyDIuM6S_lmu4pS7HlKodRmu9Olr_iZHils', // The Unique Identifier, API key for the Firebase project. (API request key)
+    appId: '1:179232677382:web:6d60759b15ce12fe94ed87', // The Unique Identifier, App ID for the Firebase project.
+    messagingSenderId: '179232677382', // ID is used  to identify the sender of a message.
+    projectId: 'mynotes-buck', // ID is used to identify the project in Firebase accros all .
+    authDomain: 'mynotes-buck.firebaseapp.com', // The domain of the Firebase project.
+    storageBucket: 'mynotes-buck.appspot.com', // The storage bucket of the Firebase project. used to store files.
+    measurementId: 'G-FDSCS0K4NF', // The Unique Measurement ID for the Firebase project. Measures interaction with your app.
   );
 
   static const FirebaseOptions android = FirebaseOptions(
