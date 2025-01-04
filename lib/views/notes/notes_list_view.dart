@@ -14,7 +14,7 @@ class NotesListView extends StatelessWidget {
     required this.notes,
     required this.onDeleteNote,
     required this.onTap,
-  }); // Is not in my file but is in the tutorial : super(key: key); prehaps change it when running into errors.
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:notes/services/auth/auth_user.dart';
 import 'package:equatable/equatable.dart';
 
+// The AuthState class is used to represent the different states of the application. This file contains the different states of the application.
+
 @immutable
 abstract class AuthState {
   final bool isLoading;
@@ -13,16 +15,15 @@ abstract class AuthState {
 }
 
 class AuthStateUninitialized extends AuthState {
-  const AuthStateUninitialized({required bool isLoading})
-      : super(isLoading: isLoading);
+  const AuthStateUninitialized({required super.isLoading});
 }
 
 class AuthStateRegistering extends AuthState {
   final Exception? exception;
   const AuthStateRegistering({
     required this.exception,
-    required isLoading,
-  }) : super(isLoading: isLoading);
+    required super.isLoading,
+  });
 }
 
 class AuthStateForgotPassword extends AuthState {
@@ -31,33 +32,29 @@ class AuthStateForgotPassword extends AuthState {
   const AuthStateForgotPassword({
     required this.exception,
     required this.hasSentEmail,
-    required bool isLoading,
-  }) : super(isLoading: isLoading);
+    required super.isLoading,
+  });
 }
 
 class AuthStateLoggedIn extends AuthState {
   final AuthUser user;
   const AuthStateLoggedIn({
     required this.user,
-    required bool isLoading,
-  }) : super(isLoading: isLoading);
+    required super.isLoading,
+  });
 }
 
 class AuthStateNeedsVerification extends AuthState {
-  const AuthStateNeedsVerification({required bool isLoading})
-      : super(isLoading: isLoading);
+  const AuthStateNeedsVerification({required super.isLoading});
 }
 
 class AuthStateLoggedOut extends AuthState with EquatableMixin {
   final Exception? exception;
   const AuthStateLoggedOut({
     required this.exception,
-    required bool isLoading,
+    required super.isLoading,
     String? loadingText,
-  }) : super(
-          isLoading: isLoading,
-          loadingText: loadingText,
-        );
+  });
 
   @override
   List<Object?> get props => [exception, isLoading];
