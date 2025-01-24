@@ -42,12 +42,12 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
     _textController.addListener(_textControllerListener);
   }
 
-  Future<CloudNote> createOrGetExistingNote(BuildContext context) async {
+  Future<Object> createOrGetExistingNote(BuildContext context) async {
     final widgetNote = context.getArgument<CloudNote>();
 
     if (widgetNote != null) {
-      _note = widgetNote;
-      _textController.text = widgetNote.text;
+      _note = widgetNote as CloudNote?;
+      _textController.text = widgetNote.text!;
       return widgetNote;
     }
 
@@ -128,4 +128,8 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
       ),
     );
   }
+}
+
+extension on Object {
+  String? get text => null;
 }
