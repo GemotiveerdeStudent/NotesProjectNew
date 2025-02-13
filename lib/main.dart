@@ -13,9 +13,8 @@ import 'package:notes/views/register_view.dart';
 import 'package:notes/views/login_view.dart';
 import 'package:notes/views/verify_email_view.dart';
 
-// This file represents the main flow in the application. Bloc is used to manage the state of the application, 
+// This file represents the main flow in the application. Bloc is used to manage the state of the application,
 // based on these states the UI is updated.
-
 
 void main() {
   // Ensure that Flutter bindings are initialized before running the app. this is the glue that connects the Flutter framework to the engine.
@@ -24,14 +23,15 @@ void main() {
 
   // Run the actual Flutter application
   runApp(
-    MaterialApp( // A widget that defines the basic material design visual layout structure.
+    MaterialApp(
+      // A widget that defines the basic material design visual layout structure.
       title: 'Notes Project',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 96, 150, 219)),
         useMaterial3: true,
       ),
-      home: BlocProvider<AuthBloc>( 
+      home: BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(FirebaseAuthProvider()),
         child: const HomePage(),
       ),
@@ -43,8 +43,7 @@ void main() {
   );
 }
 
-
-// The HomePage widget is the main widget of the application. 
+// The HomePage widget is the main widget of the application.
 // It is responsible for managing the state of the application and displaying the appropriate UI based on the state.
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -52,28 +51,31 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<AuthBloc>().add(const AuthEventInitialize());
-    return BlocConsumer<AuthBloc, AuthState>( // A widget that listens to the state changes of the AuthBloc and rebuilds the UI accordingly. 
-                                              // It is using 2 parameters, the listener and the builder.
-      
-      listener: (context, state) { // The listener is used to listen to the state changes of the AuthBloc and perform side effects accordingly, like the loading screen.
-        if (state is AuthStateLoggedOut) { // If the state is AuthStateLoggedOut and the state is loading the application will show the loading screen.
+    return BlocConsumer<AuthBloc, AuthState>(
+      // A widget that listens to the state changes of the AuthBloc and rebuilds the UI accordingly.
+      // It is using 2 parameters, the listener and the builder.
+
+      listener: (context, state) {
+        // The listener is used to listen to the state changes of the AuthBloc and perform side effects accordingly, like the loading screen.
+        if (state is AuthStateLoggedOut) {
+          // If the state is AuthStateLoggedOut and the state is loading the application will show the loading screen.
           if (state.isLoading) {
             LoadingScreen().show(
-              context : context,
+              context: context,
               text: state.loadingText ?? 'Please wait a moment',
             );
-          } else { // If the state is not loading the application will hide the loading screen.
+          } else {
+            // If the state is not loading the application will hide the loading screen.
             LoadingScreen().hide();
           }
         }
       },
 
-  // The BlocConsumer widget is used to listen to the state changes of the AuthBloc and rebuild the UI accordingly. 
-  // this is the navigation in the application through the Bloc States.
-  // The states are defined by looking at the AuthState class. some key elements in this are :
-  // Unregistered/Registered, LoggedIn/LoggedOut, NeedsVerification and Forgot Password.
+      // The BlocConsumer widget is used to listen to the state changes of the AuthBloc and rebuild the UI accordingly.
+      // this is the navigation in the application through the Bloc States.
+      // The states are defined by looking at the AuthState class. some key elements in this are :
+      // Unregistered/Registered, LoggedIn/LoggedOut, NeedsVerification and Forgot Password.
       builder: (context, state) {
-        
         if (state is AuthStateLoggedIn) {
           return const NotesView();
         } else if (state is AuthStateNeedsVerification) {
@@ -84,7 +86,8 @@ class HomePage extends StatelessWidget {
           return const ForgotPasswordView();
         } else if (state is AuthStateRegistering) {
           return const RegisterView();
-        } {
+        }
+        {
           return const Scaffold(
             body: CircularProgressIndicator(),
           );
